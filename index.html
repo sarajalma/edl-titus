@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>État des lieux — 1B rue Titus</title>
+<style>
+  :root {
+    --bg: #f6f5f2;
+    --card: #ffffff;
+    --ink: #1c1b19;
+    --muted: #6b6862;
+    --line: #dedbd4;
+    --accent: #2f6f4e;
+    --neuf: #2f6f4e;
+    --usage: #8a6d1f;
+    --degrade: #a8402c;
+    --nonverif: #6b6862;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font: 16px/1.45 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+  header {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: var(--card);
+    border-bottom: 1px solid var(--line);
+    padding: 12px 16px;
+  }
+  header h1 { margin: 0; font-size: 17px; }
+  header p { margin: 2px 0 0; font-size: 13px; color: var(--muted); }
+  #statut {
+    font-size: 12px;
+    color: var(--accent);
+    opacity: 0;
+    transition: opacity .25s;
+  }
+  #statut.on { opacity: 1; }
+  main { max-width: 780px; margin: 0 auto; padding: 16px 12px 64px; }
+  .zone > h2 {
+    font-size: 15px;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    color: var(--muted);
+    margin: 28px 4px 8px;
+  }
+  .piece {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    margin-bottom: 14px;
+    overflow: hidden;
+  }
+  .piece > h3 {
+    margin: 0;
+    padding: 10px 14px;
+    font-size: 15px;
+    background: #efece6;
+    border-bottom: 1px solid var(--line);
+  }
+  .element {
+    padding: 10px 14px;
+    border-bottom: 1px solid #f0eee9;
+  }
+  .element:last-child { border-bottom: 0; }
+  .libelle { font-weight: 600; font-size: 15px; }
+  .qte-info { font-weight: 400; color: var(--muted); font-size: 13px; }
+  .etats { display: flex; flex-wrap: wrap; gap: 6px; margin: 8px 0 6px; }
+  .etats label {
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    padding: 4px 11px;
+    font-size: 13px;
+    cursor: pointer;
+    background: #fbfaf8;
+    user-select: none;
+  }
+  .etats input { position: absolute; opacity: 0; width: 0; height: 0; }
+  .etats label:has(input:checked) { color: #fff; border-color: transparent; }
+  .etats label.neuf:has(input:checked) { background: var(--neuf); }
+  .etats label.etat_usage:has(input:checked) { background: var(--usage); }
+  .etats label.degrade:has(input:checked) { background: var(--degrade); }
+  .etats label.non_verifie:has(input:checked) { background: var(--nonverif); }
+  .etats label:has(input:focus-visible) { outline: 2px solid var(--accent); outline-offset: 2px; }
+  textarea {
+    width: 100%;
+    min-height: 40px;
+    font: inherit;
+    font-size: 14px;
+    padding: 7px 9px;
+    border: 1px solid var(--line);
+    border-radius: 7px;
+    background: #fbfaf8;
+    resize: vertical;
+  }
+  textarea:focus, input[type=number]:focus { outline: 2px solid var(--accent); outline-offset: -1px; }
+  .inv-bloc h4 {
+    margin: 0;
+    padding: 9px 14px;
+    font-size: 14px;
+    background: #f6f3ec;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+  }
+  .inv-ligne {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 7px 14px;
+    border-bottom: 1px solid #f0eee9;
+    font-size: 14px;
+  }
+  .inv-ligne:last-child { border-bottom: 0; }
+  .inv-ligne input[type=number] {
+    width: 74px;
+    font: inherit;
+    text-align: center;
+    padding: 5px;
+    border: 1px solid var(--line);
+    border-radius: 7px;
+    background: #fbfaf8;
+  }
+  .erreur {
+    background: #fdecea;
+    border: 1px solid #f0b4ab;
+    color: #7a2418;
+    padding: 14px;
+    border-radius: 10px;
+    font-size: 14px;
+  }
+  code { background: #eee9df; padding: 1px 5px; border-radius: 4px; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1 id="titre">État des lieux</h1>
+  <p id="sous-titre">Chargement de edl.json…</p>
+  <span id="statut">Enregistré</span>
+</header>
+
+<main id="app"></main>
+
+<script>
+(function () {
+  'use strict';
+
+  var STORAGE_KEY = 'edl-titus-v1';
+  var ETATS = [
+    { id: 'neuf', libelle: 'Neuf' },
+    { id: 'etat_usage', libelle: "État d'usage" },
+    { id: 'degrade', libelle: 'Dégradé' },
+    { id: 'non_verifie', libelle: 'Non vérifié' }
+  ];
+  var ORDRE_ZONES = ['communs', 'chambre_1', 'chambre_2', 'chambre_3'];
+
+  var store = {};
+  try {
+    store = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
+  } catch (e) {
+    store = {};
+  }
+
+  var statut = document.getElementById('statut');
+  var minuteur = null;
+
+  function sauvegarder() {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(store));
+      statut.textContent = 'Enregistré';
+    } catch (e) {
+      statut.textContent = 'Échec de la sauvegarde locale';
+    }
+    statut.classList.add('on');
+    clearTimeout(minuteur);
+    minuteur = setTimeout(function () { statut.classList.remove('on'); }, 1200);
+  }
+
+  function champ(cle, nom, valeur) {
+    var o = store[cle] || {};
+    o[nom] = valeur;
+    store[cle] = o;
+    sauvegarder();
+  }
+
+  function lire(cle, nom, defaut) {
+    var o = store[cle];
+    return o && o[nom] !== undefined && o[nom] !== null ? o[nom] : defaut;
+  }
+
+  function el(balise, classe, texte) {
+    var n = document.createElement(balise);
+    if (classe) n.className = classe;
+    if (texte !== undefined) n.textContent = texte;
+    return n;
+  }
+
+  function rendreElement(cle, donnee) {
+    var bloc = el('div', 'element');
+
+    var titre = el('div', 'libelle', donnee.libelle);
+    if (donnee.type === 'inventaire' && typeof donnee.quantite === 'number') {
+      titre.appendChild(el('span', 'qte-info', '  ×' + donnee.quantite));
+    }
+    bloc.appendChild(titre);
+
+    var etatCourant = lire(cle, 'etat', donnee.etat || 'non_verifie');
+    var etats = el('div', 'etats');
+    ETATS.forEach(function (e) {
+      var lab = el('label', e.id);
+      var radio = document.createElement('input');
+      radio.type = 'radio';
+      radio.name = cle;
+      radio.value = e.id;
+      radio.defaultChecked = etatCourant === e.id;
+      radio.addEventListener('change', function () {
+        if (radio.checked) champ(cle, 'etat', e.id);
+      });
+      lab.appendChild(radio);
+      lab.appendChild(document.createTextNode(e.libelle));
+      etats.appendChild(lab);
+    });
+    bloc.appendChild(etats);
+
+    var zone = document.createElement('textarea');
+    zone.rows = 2;
+    zone.placeholder = 'Commentaire';
+    zone.setAttribute('aria-label', 'Commentaire — ' + donnee.libelle);
+    zone.defaultValue = lire(cle, 'commentaire', donnee.commentaire || '');
+    zone.addEventListener('input', function () {
+      champ(cle, 'commentaire', zone.value);
+    });
+    bloc.appendChild(zone);
+
+    return bloc;
+  }
+
+  function rendreInventaire(clePiece, inv) {
+    var bloc = el('div', 'inv-bloc');
+    bloc.appendChild(el('h4', null, inv.libelle));
+    (inv.items || []).forEach(function (item, i) {
+      var cle = clePiece + '/inv/' + inv.id + '/' + i;
+      var ligne = el('div', 'inv-ligne');
+      ligne.appendChild(el('span', null, item.libelle));
+
+      var nb = document.createElement('input');
+      nb.type = 'number';
+      nb.min = '0';
+      nb.step = '1';
+      nb.setAttribute('aria-label', item.libelle);
+      nb.defaultValue = lire(cle, 'quantite', item.quantite);
+      nb.addEventListener('input', function () {
+        champ(cle, 'quantite', nb.value === '' ? '' : Number(nb.value));
+      });
+      ligne.appendChild(nb);
+      bloc.appendChild(ligne);
+    });
+    return bloc;
+  }
+
+  function rendrePiece(cleZone, piece) {
+    var clePiece = cleZone + '/' + piece.id;
+    var bloc = el('section', 'piece');
+    bloc.appendChild(el('h3', null, piece.libelle));
+
+    (piece.elements || []).forEach(function (donnee) {
+      bloc.appendChild(rendreElement(clePiece + '/' + donnee.id, donnee));
+    });
+
+    (piece.inventaires || []).forEach(function (inv) {
+      bloc.appendChild(rendreInventaire(clePiece, inv));
+    });
+
+    return bloc;
+  }
+
+  function rendre(edl) {
+    var app = document.getElementById('app');
+    app.textContent = '';
+
+    var logement = edl.logement || {};
+    document.getElementById('titre').textContent = 'État des lieux — ' + (logement.adresse || '');
+    var occ = edl.chambres_occupants || {};
+    document.getElementById('sous-titre').textContent =
+      [logement.type, logement.nb_chambres ? logement.nb_chambres + ' chambres' : null]
+        .filter(Boolean).join(' · ');
+
+    ORDRE_ZONES.forEach(function (cleZone) {
+      var zone = (edl.zones || {})[cleZone];
+      if (!zone) return;
+
+      var sect = el('section', 'zone');
+      var titre = zone.libelle || cleZone;
+      var locataire = occ[cleZone] && occ[cleZone].locataire;
+      if (locataire) titre += ' — ' + locataire;
+      sect.appendChild(el('h2', null, titre));
+
+      (zone.pieces || []).forEach(function (piece) {
+        sect.appendChild(rendrePiece(cleZone, piece));
+      });
+
+      app.appendChild(sect);
+    });
+  }
+
+  function erreur(message) {
+    var app = document.getElementById('app');
+    app.textContent = '';
+    var bloc = el('div', 'erreur');
+    bloc.appendChild(el('p', null, message));
+    var p = el('p', null, 'Ouvre la page via un serveur local, par exemple : ');
+    p.appendChild(el('code', null, 'python3 -m http.server'));
+    p.appendChild(document.createTextNode(' puis http://localhost:8000/index.html'));
+    bloc.appendChild(p);
+    app.appendChild(bloc);
+    document.getElementById('sous-titre').textContent = 'edl.json non chargé';
+  }
+
+  fetch('edl.json')
+    .then(function (r) {
+      if (!r.ok) throw new Error('HTTP ' + r.status);
+      return r.json();
+    })
+    .then(rendre)
+    .catch(function (e) {
+      erreur('Impossible de charger edl.json (' + e.message + ').');
+    });
+})();
+</script>
+
+</body>
+</html>
