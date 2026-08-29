@@ -1,0 +1,363 @@
+{
+  "_schema": {
+    "version": "1.0",
+    "note": "Structure de reference du logement. Un EDL genere = communs + une chambre.",
+    "etats_possibles": ["neuf", "etat_usage", "degrade", "non_verifie"],
+    "types_element": {
+      "etat": "element qualitatif : etat + commentaire libre",
+      "inventaire": "element quantitatif : compteur + etat global optionnel",
+      "releve": "index de compteur, valeur numerique + unite"
+    }
+  },
+
+  "logement": {
+    "adresse": "1B rue Titus, 30000 Nimes",
+    "type": "colocation meublee",
+    "nb_chambres": 3
+  },
+
+  "bailleur": {
+    "nom": "Sara JERJINI",
+    "adresse": "1 rue Cuif, 94410",
+    "email": "sarajerjini@gmail.com"
+  },
+
+  "chambres_occupants": {
+    "chambre_1": { "locataire": "Sacha", "email": null, "_note": "EDL source portait encore Alexis Castro" },
+    "chambre_2": { "locataire": "Maely", "email": null, "_note": "EDL source portait encore Maely Capelle et un intitule Chambre 3 / Anya Debur" },
+    "chambre_3": { "locataire": "Zack", "email": null, "_note": "EDL source portait encore Anya Debur" }
+  },
+
+  "releves": [
+    { "id": "gaz", "libelle": "Gaz", "unite": "m3", "valeur": 1373.769 },
+    { "id": "electricite", "libelle": "Electricite", "unite": "kWh", "valeur": 3429, "option": "BASE" }
+  ],
+
+  "zones": {
+
+    "communs": {
+      "libelle": "Parties communes",
+      "pieces": [
+
+        {
+          "id": "entree",
+          "libelle": "Entree",
+          "elements": [
+            { "id": "porte_entree", "libelle": "Porte d'entree", "type": "etat", "etat": "etat_usage", "commentaire": "Fonctionnelle" },
+            { "id": "sols", "libelle": "Sols - carrelage", "type": "etat", "etat": "etat_usage", "commentaire": "RAS" },
+            { "id": "murs", "libelle": "Murs - peinture", "type": "etat", "etat": "etat_usage", "commentaire": "" },
+            { "id": "plafond", "libelle": "Plafond - peinture", "type": "etat", "etat": "degrade", "commentaire": "Peinture ecaillee" },
+            { "id": "interphone", "libelle": "Interphone", "type": "etat", "etat": "degrade", "commentaire": "Casse au niveau de la touche off" },
+            { "id": "thermostat", "libelle": "Thermostat", "type": "etat", "etat": "neuf", "commentaire": "" },
+            { "id": "pateres", "libelle": "Pateres", "type": "etat", "etat": "etat_usage", "commentaire": "Mur de gauche" },
+            { "id": "miroirs", "libelle": "Miroirs", "type": "inventaire", "quantite": 2, "etat": "etat_usage", "commentaire": "" },
+            { "id": "banc_entree", "libelle": "Banc d'entree", "type": "etat", "etat": "etat_usage", "commentaire": "" }
+          ]
+        },
+
+        {
+          "id": "sejour",
+          "libelle": "Sejour",
+          "elements": [
+            { "id": "sols", "libelle": "Sols - parquet LVT", "type": "etat", "etat": "neuf", "commentaire": "Sans rayures, seuil deja abime" },
+            { "id": "murs", "libelle": "Murs - peinture", "type": "etat", "etat": "etat_usage", "commentaire": "Rayure sur le mur rouge deja existante" },
+            { "id": "plafond", "libelle": "Plafond", "type": "etat", "etat": "etat_usage", "commentaire": "" },
+            { "id": "canape", "libelle": "Canape", "type": "etat", "etat": "neuf", "commentaire": "" },
+            { "id": "table_basse", "libelle": "Table basse", "type": "etat", "etat": "etat_usage", "commentaire": "Ancienne" },
+            { "id": "buffet", "libelle": "Buffet", "type": "etat", "etat": "etat_usage", "commentaire": "Ancien mais fonctionnel, 2 clefs" },
+            { "id": "television", "libelle": "Television JVC", "type": "etat", "etat": "neuf", "commentaire": "" },
+            { "id": "lampe", "libelle": "Lampe", "type": "inventaire", "quantite": 1, "etat": "etat_usage", "commentaire": "" },
+            { "id": "vase", "libelle": "Vase metal noir avec pampa", "type": "inventaire", "quantite": 1, "etat": "etat_usage", "commentaire": "" },
+            { "id": "pots", "libelle": "Pots", "type": "inventaire", "quantite": 2, "etat": "etat_usage", "commentaire": "" },
+            { "id": "cadres", "libelle": "Cadres", "type": "inventaire", "quantite": 2, "etat": "etat_usage", "commentaire": "" }
+          ]
+        },
+
+        {
+          "id": "cuisine",
+          "libelle": "Cuisine",
+          "elements": [
+            { "id": "sols", "libelle": "Sols - parquet LVT", "type": "etat", "etat": "neuf", "commentaire": "Sans rayures" },
+            { "id": "murs", "libelle": "Murs - peinture", "type": "etat", "etat": "etat_usage", "commentaire": "" },
+            { "id": "credence", "libelle": "Credence carrelee", "type": "etat", "etat": "etat_usage", "commentaire": "" },
+            { "id": "plafond", "libelle": "Plafond", "type": "etat", "etat": "etat_usage", "commentaire": "" },
+            { "id": "meubles_cuisine", "libelle": "Meubles de cuisine", "type": "etat", "etat": "etat_usage", "commentaire": "Plan de travail avec traces existantes" },
+            { "id": "evier_robinetterie", "libelle": "Evier et robinetterie", "type": "etat", "etat": "neuf", "commentaire": "" },
+            { "id": "table", "libelle": "Table", "type": "etat", "etat": "etat_usage", "commentaire": "Rayures existantes" },
+            { "id": "chaises", "libelle": "Chaises", "type": "inventaire", "quantite": 6, "etat": "etat_usage", "commentaire": "" },
+            { "id": "micro_onde", "libelle": "Micro-ondes", "type": "etat", "etat": "etat_usage", "commentaire": "Fonctionnel" },
+            { "id": "refrigerateur", "libelle": "Refrigerateur", "type": "etat", "etat": "etat_usage", "commentaire": "Fonctionnel, poignee du haut maintenue avec du scotch" },
+            { "id": "bouilloire", "libelle": "Bouilloire electrique", "type": "etat", "etat": "neuf", "commentaire": "" },
+            { "id": "machine_cafe", "libelle": "Machine a cafe Nespresso", "type": "etat", "etat": "neuf", "commentaire": "" },
+            { "id": "grille_pain", "libelle": "Grille-pain", "type": "etat", "etat": "neuf", "commentaire": "" },
+            { "id": "plaque_cuisson", "libelle": "Plaque de cuisson", "type": "etat", "etat": "etat_usage", "commentaire": "Allumage automatique sur 1 feu uniquement" },
+            { "id": "four", "libelle": "Four electrique", "type": "etat", "etat": "etat_usage", "commentaire": "Minuterie cassee" },
+            { "id": "lave_vaisselle", "libelle": "Lave-vaisselle", "type": "etat", "etat": "etat_usage", "commentaire": "" }
+          ],
+
+          "inventaires": [
+            {
+              "id": "etageres_murales",
+              "libelle": "Etageres murales",
+              "items": [
+                { "libelle": "Tasses blanches", "quantite": 5 },
+                { "libelle": "Tasses en verre", "quantite": 2 },
+                { "libelle": "Theiere blanche", "quantite": 1 },
+                { "libelle": "Verres a eau", "quantite": 9 },
+                { "libelle": "Pot a eau", "quantite": 1 },
+                { "libelle": "Grandes assiettes", "quantite": 8 },
+                { "libelle": "Grandes assiettes blanches Ikea", "quantite": 4 },
+                { "libelle": "Petites assiettes", "quantite": 6 },
+                { "libelle": "Petits bols", "quantite": 4 },
+                { "libelle": "Grands bols", "quantite": 9 },
+                { "libelle": "Couvre-plat en plastique (micro-ondes)", "quantite": 1 }
+              ]
+            },
+            {
+              "id": "sous_evier",
+              "libelle": "Sous evier",
+              "items": [
+                { "libelle": "Grande poubelle 50L", "quantite": 1 },
+                { "libelle": "Petite poubelle recyclage", "quantite": 1 }
+              ]
+            },
+            {
+              "id": "tiroir_menagere",
+              "libelle": "Tiroir menagere",
+              "items": [
+                { "libelle": "Couteaux de cuisine", "quantite": 5 },
+                { "libelle": "Petites cuilleres", "quantite": 8 },
+                { "libelle": "Couteaux", "quantite": 9 },
+                { "libelle": "Fourchettes", "quantite": 8 },
+                { "libelle": "Grandes cuilleres", "quantite": 9 }
+              ]
+            },
+            {
+              "id": "tiroir_gauche",
+              "libelle": "Tiroir de gauche",
+              "items": [
+                { "libelle": "Economes", "quantite": 2 },
+                { "libelle": "Fouet", "quantite": 1 },
+                { "libelle": "Louche", "quantite": 1 },
+                { "libelle": "Spatule", "quantite": 1 },
+                { "libelle": "Cuillere en bois", "quantite": 1 }
+              ]
+            },
+            {
+              "id": "grands_tiroirs",
+              "libelle": "Grands tiroirs",
+              "items": [
+                { "libelle": "Saladiers metalliques", "quantite": 3 },
+                { "libelle": "Saladier en plastique avec couvercle", "quantite": 1 },
+                { "libelle": "Grande passoire en plastique", "quantite": 1 },
+                { "libelle": "Bol a carreaux vert et blanc", "quantite": 1 },
+                { "libelle": "Plats pour four rectangulaires", "quantite": 2 },
+                { "libelle": "Fait-tout noirs avec couvercle et 2 poignees", "quantite": 2 },
+                { "libelle": "Fait-tout sans couvercle avec 2 poignees", "quantite": 1 },
+                { "libelle": "Casseroles noires sans couvercle", "quantite": 2 },
+                { "libelle": "Poele email blanc 24 cm", "quantite": 1 },
+                { "libelle": "Rape", "quantite": 1 }
+              ]
+            },
+            {
+              "id": "tiroir_sous_four",
+              "libelle": "Tiroir sous le four",
+              "items": [
+                { "libelle": "Moule a tarte", "quantite": 1 },
+                { "libelle": "Dessous de plats en liege", "quantite": 5 },
+                { "libelle": "Gant de cuisine", "quantite": 1 }
+              ]
+            }
+          ]
+        },
+
+        {
+          "id": "buanderie",
+          "libelle": "Buanderie",
+          "elements": [
+            { "id": "sols", "libelle": "Sols - parquet LVT", "type": "etat", "etat": "neuf", "commentaire": "Sans rayures" },
+            { "id": "murs", "libelle": "Murs - peinture", "type": "etat", "etat": "etat_usage", "commentaire": "" },
+            { "id": "plafond", "libelle": "Plafond", "type": "etat", "etat": "etat_usage", "commentaire": "Quelques rayures existantes" },
+            { "id": "evier_robinetterie", "libelle": "Evier et robinetterie", "type": "etat", "etat": "neuf", "commentaire": "" },
+            { "id": "meuble_evier", "libelle": "Meuble evier", "type": "etat", "etat": "etat_usage", "commentaire": "Aureole au niveau du plateau intermediaire" },
+            { "id": "lave_linge", "libelle": "Lave-linge sechant INDESIT", "type": "etat", "etat": "neuf", "commentaire": "" },
+            { "id": "planche_repasser", "libelle": "Planche a repasser", "type": "etat", "etat": "neuf", "commentaire": "" },
+            { "id": "fer_repasser", "libelle": "Fer a repasser", "type": "etat", "etat": "etat_usage", "commentaire": "Fonctionnel" }
+          ]
+        },
+
+        {
+          "id": "wc",
+          "libelle": "WC",
+          "elements": [
+            { "id": "sols", "libelle": "Sols - carrelage", "type": "etat", "etat": "etat_usage", "commentaire": "" },
+            { "id": "murs", "libelle": "Murs - peinture", "type": "etat", "etat": "etat_usage", "commentaire": "Traces sur le carrelage" },
+            { "id": "plafond", "libelle": "Plafond", "type": "etat", "etat": "etat_usage", "commentaire": "" },
+            { "id": "cuvette", "libelle": "Cuvette WC", "type": "etat", "etat": "etat_usage", "commentaire": "Propre, sans traces de calcaire" },
+            { "id": "balayette", "libelle": "Balayette toilette noire", "type": "inventaire", "quantite": 1, "etat": "etat_usage", "commentaire": "" },
+            { "id": "derouleur", "libelle": "Derouleur papier", "type": "inventaire", "quantite": 1, "etat": "etat_usage", "commentaire": "" }
+          ]
+        },
+
+        {
+          "id": "couloir",
+          "libelle": "Couloir avec rangement",
+          "elements": [
+            { "id": "sols", "libelle": "Sols - parquet LVT", "type": "etat", "etat": "neuf", "commentaire": "Sans rayures" },
+            { "id": "murs", "libelle": "Murs - peinture", "type": "etat", "etat": "etat_usage", "commentaire": "" },
+            { "id": "plafond", "libelle": "Plafond", "type": "etat", "etat": "etat_usage", "commentaire": "" }
+          ]
+        }
+
+      ]
+    },
+
+    "chambre_1": {
+      "libelle": "Chambre 1",
+      "_source": "EDL Alexis Castro, 06/09/2023",
+      "pieces": [
+        {
+          "id": "chambre",
+          "libelle": "Chambre",
+          "elements": [
+            { "id": "sols_parquet", "libelle": "Sols - parquet LVT", "type": "etat", "etat": "neuf", "commentaire": "Sans rayures" },
+            { "id": "sols_carrelage", "libelle": "Sols - carrelage octogonal", "type": "etat", "etat": "neuf", "commentaire": "Pas d'eclat" },
+            { "id": "murs_blancs", "libelle": "Murs - peinture blanche", "type": "etat", "etat": "etat_usage", "commentaire": "" },
+            { "id": "murs_roses", "libelle": "Murs - peinture rose", "type": "etat", "etat": "etat_usage", "commentaire": "Traces sur les murs au niveau de la salle de bain" },
+            { "id": "plafond", "libelle": "Plafond", "type": "etat", "etat": "neuf", "commentaire": "" },
+            { "id": "agencement_bois", "libelle": "Agencement bois (bureau, 2 rangements, echelle)", "type": "etat", "etat": "degrade", "commentaire": "Traces de peinture et salissures, une trace rouge sur le cote droit" },
+            { "id": "etageres", "libelle": "Etageres en bois", "type": "etat", "etat": "etat_usage", "commentaire": "Pas de traces ni salissures" },
+            { "id": "penderie", "libelle": "Penderie blanche avec tablette et 2 tiroirs", "type": "etat", "etat": "degrade", "commentaire": "Ne sont plus fixees correctement, a remplacer" },
+            { "id": "fauteuil", "libelle": "Fauteuil en bois", "type": "etat", "etat": "neuf", "commentaire": "" },
+            { "id": "table_metal", "libelle": "Petite table en metal blanche", "type": "etat", "etat": "neuf", "commentaire": "" },
+            { "id": "poubelle", "libelle": "Poubelle en plastique", "type": "inventaire", "quantite": 0, "etat": "non_verifie", "commentaire": "MANQUANTE a l'entree" },
+            { "id": "cadres", "libelle": "Cadres photos vides", "type": "inventaire", "quantite": 2, "etat": "etat_usage", "commentaire": "" },
+            { "id": "lampe_bureau", "libelle": "Lampe de bureau", "type": "inventaire", "quantite": 1, "etat": "etat_usage", "commentaire": "" },
+            { "id": "volets", "libelle": "Volets manuels", "type": "etat", "etat": "etat_usage", "commentaire": "Fonctionnels" },
+            { "id": "rideaux", "libelle": "Rideaux blancs (paire)", "type": "etat", "etat": "degrade", "commentaire": "Taches rouges et marron" },
+            { "id": "porte_fenetre", "libelle": "Porte-fenetre", "type": "etat", "etat": "etat_usage", "commentaire": "Poignee fonctionnelle mais a forcer" }
+          ]
+        },
+        {
+          "id": "mezzanine",
+          "libelle": "Mezzanine",
+          "elements": [
+            { "id": "matelas", "libelle": "Matelas", "type": "etat", "etat": "etat_usage", "commentaire": "Propre, avec protege-matelas, 3 micro-taches" },
+            { "id": "oreillers", "libelle": "Oreillers", "type": "inventaire", "quantite": 2, "etat": "etat_usage", "commentaire": "" },
+            { "id": "table_chevet", "libelle": "Table de chevet", "type": "etat", "etat": "etat_usage", "commentaire": "Fonctionnelle" },
+            { "id": "ventilateur", "libelle": "Ventilateur", "type": "etat", "etat": "neuf", "commentaire": "" }
+          ]
+        },
+        {
+          "id": "coin_sdb",
+          "libelle": "Coin salle de bain",
+          "elements": [
+            { "id": "lavabo", "libelle": "Lavabo", "type": "etat", "etat": "neuf", "commentaire": "Pas d'eclat, evacuation fonctionnelle" },
+            { "id": "miroir", "libelle": "Miroir", "type": "etat", "etat": "etat_usage", "commentaire": "Sans rayures" },
+            { "id": "douche", "libelle": "Receveur de douche et robinetterie", "type": "etat", "etat": "etat_usage", "commentaire": "Traces de calcaire, pas d'eclat ni de rayures, evacuation fonctionnelle, joint" },
+            { "id": "rideau_douche", "libelle": "Rideau de douche", "type": "etat", "etat": "degrade", "commentaire": "A REMPLACER" },
+            { "id": "etagere_plastique", "libelle": "Etagere en plastique sous le lavabo", "type": "etat", "etat": "etat_usage", "commentaire": "" }
+          ]
+        }
+      ]
+    },
+
+    "chambre_2": {
+      "libelle": "Chambre 2",
+      "_source": "EDL Maely, document date 30/08/2023 mais redige a une autre date (communs divergents) - A CONFIRMER",
+      "pieces": [
+        {
+          "id": "chambre",
+          "libelle": "Chambre",
+          "elements": [
+            { "id": "sols_parquet", "libelle": "Sols - parquet LVT", "type": "etat", "etat": "neuf", "commentaire": "Sans rayures" },
+            { "id": "sols_tomettes", "libelle": "Sols - tomettes", "type": "etat", "etat": "degrade", "commentaire": "Abimees, divers eclats" },
+            { "id": "murs_blancs", "libelle": "Murs - peinture blanche", "type": "etat", "etat": "etat_usage", "commentaire": "Traces de doigts" },
+            { "id": "murs_bleus", "libelle": "Murs - peinture bleue", "type": "etat", "etat": "etat_usage", "commentaire": "" },
+            { "id": "plafond", "libelle": "Plafond - peinture blanche", "type": "etat", "etat": "etat_usage", "commentaire": "" },
+            { "id": "dressing", "libelle": "Dressing", "type": "etat", "etat": "etat_usage", "commentaire": "2 penderies, 1 tablette, 2 tiroirs, fonctionnel" },
+            { "id": "agencement_bois", "libelle": "Agencement bois (bureau, 2 portes coulissantes, echelle)", "type": "etat", "etat": "degrade", "commentaire": "Traces a l'interieur des portes, traces de salissures, abime au niveau de l'escabeau, bois griffe" },
+            { "id": "etageres", "libelle": "Etageres en bois", "type": "etat", "etat": "etat_usage", "commentaire": "Pas de traces ni salissures" },
+            { "id": "fauteuil", "libelle": "Fauteuil bleu", "type": "etat", "etat": "neuf", "commentaire": "" },
+            { "id": "table_metal", "libelle": "Petite table en metal bleu", "type": "etat", "etat": "neuf", "commentaire": "" },
+            { "id": "poubelle", "libelle": "Poubelle en plastique", "type": "inventaire", "quantite": 1, "etat": "etat_usage", "commentaire": "" },
+            { "id": "cadre", "libelle": "Cadre avec poster", "type": "inventaire", "quantite": 1, "etat": "etat_usage", "commentaire": "" },
+            { "id": "lampe_bureau", "libelle": "Lampe de bureau", "type": "inventaire", "quantite": 1, "etat": "etat_usage", "commentaire": "" },
+            { "id": "volets", "libelle": "Volets electriques", "type": "etat", "etat": "etat_usage", "commentaire": "Fonctionnels" },
+            { "id": "rideaux", "libelle": "Rideaux - voilage", "type": "etat", "etat": "non_verifie", "commentaire": "Presence confirmee par la bailleresse, absent de l'EDL source - etat a constater sur place" }
+          ]
+        },
+        {
+          "id": "mezzanine",
+          "libelle": "Mezzanine",
+          "elements": [
+            { "id": "matelas", "libelle": "Matelas", "type": "etat", "etat": "etat_usage", "commentaire": "4 annees d'utilisation, avec protege-matelas" },
+            { "id": "tete_de_lit", "libelle": "Tete de lit et element droit", "type": "etat", "etat": "degrade", "commentaire": "Traces grises" },
+            { "id": "table_chevet", "libelle": "Table de chevet", "type": "etat", "etat": "etat_usage", "commentaire": "Fonctionnelle, une tache dessus" },
+            { "id": "lampe_chevet", "libelle": "Lampe de chevet", "type": "etat", "etat": "etat_usage", "commentaire": "Fonctionnelle" },
+            { "id": "ventilateur", "libelle": "Ventilateur", "type": "etat", "etat": "neuf", "commentaire": "" }
+          ]
+        },
+        {
+          "id": "coin_sdb",
+          "libelle": "Coin salle de bain",
+          "elements": [
+            { "id": "lavabo", "libelle": "Lavabo", "type": "etat", "etat": "degrade", "commentaire": "Neuf, pas d'eclat, mais evacuation LENTE" },
+            { "id": "miroir", "libelle": "Miroir", "type": "etat", "etat": "etat_usage", "commentaire": "Sans rayures" },
+            { "id": "douche", "libelle": "Receveur de douche et robinetterie", "type": "etat", "etat": "neuf", "commentaire": "Pas d'eclat ni de rayures, evacuation fonctionnelle, traces de calcaire" },
+            { "id": "rideau_douche", "libelle": "Rideau de douche", "type": "etat", "etat": "etat_usage", "commentaire": "Un peu jauni sur le bas" }
+          ]
+        }
+      ]
+    },
+
+    "chambre_3": {
+      "libelle": "Chambre 3",
+      "pieces": [
+        {
+          "id": "chambre",
+          "libelle": "Chambre",
+          "elements": [
+            { "id": "sols_parquet", "libelle": "Sols - parquet LVT", "type": "etat", "etat": "neuf", "commentaire": "Sans rayures" },
+            { "id": "sols_tomettes", "libelle": "Sols - tomettes", "type": "etat", "etat": "degrade", "commentaire": "Abimees, divers eclats" },
+            { "id": "murs_blancs", "libelle": "Murs - peinture blanche", "type": "etat", "etat": "etat_usage", "commentaire": "Traces de doigts" },
+            { "id": "murs_verts", "libelle": "Murs - peinture verte", "type": "etat", "etat": "etat_usage", "commentaire": "Bon etat" },
+            { "id": "plafond_blanc", "libelle": "Plafond - peinture blanche", "type": "etat", "etat": "etat_usage", "commentaire": "Craquelures au niveau des moulures" },
+            { "id": "plafond_vert", "libelle": "Plafond - peinture verte", "type": "etat", "etat": "etat_usage", "commentaire": "" },
+            { "id": "dressing", "libelle": "Dressing", "type": "etat", "etat": "etat_usage", "commentaire": "2 penderies, 1 tablette, 2 tiroirs, fonctionnel" },
+            { "id": "agencement_bois", "libelle": "Agencement bois (bureau, 2 portes coulissantes, echelle)", "type": "etat", "etat": "degrade", "commentaire": "Traces de salissures, abime au niveau de l'escabeau, bois griffe" },
+            { "id": "etageres", "libelle": "Etageres en bois", "type": "etat", "etat": "etat_usage", "commentaire": "Pas de traces ni salissures" },
+            { "id": "fauteuil", "libelle": "Fauteuil en bois", "type": "etat", "etat": "neuf", "commentaire": "" },
+            { "id": "table_metal", "libelle": "Petite table en metal blanc", "type": "etat", "etat": "neuf", "commentaire": "" },
+            { "id": "poubelle", "libelle": "Poubelle en plastique", "type": "inventaire", "quantite": 1, "etat": "etat_usage", "commentaire": "" },
+            { "id": "cadre", "libelle": "Cadre avec poster", "type": "inventaire", "quantite": 1, "etat": "etat_usage", "commentaire": "" },
+            { "id": "lampe_bureau", "libelle": "Lampe de bureau", "type": "inventaire", "quantite": 1, "etat": "etat_usage", "commentaire": "" },
+            { "id": "volets", "libelle": "Volets electriques", "type": "etat", "etat": "etat_usage", "commentaire": "Fonctionnels" },
+            { "id": "rideaux", "libelle": "Rideaux - voilage blanc", "type": "etat", "etat": "etat_usage", "commentaire": "Sans taches" }
+          ]
+        },
+        {
+          "id": "mezzanine",
+          "libelle": "Mezzanine",
+          "elements": [
+            { "id": "matelas", "libelle": "Matelas", "type": "etat", "etat": "etat_usage", "commentaire": "4 annees d'utilisation, avec protege-matelas" },
+            { "id": "table_chevet", "libelle": "Table de chevet", "type": "etat", "etat": "etat_usage", "commentaire": "Fonctionnelle" },
+            { "id": "lampe_chevet", "libelle": "Lampe de chevet", "type": "etat", "etat": "etat_usage", "commentaire": "Fonctionnelle" },
+            { "id": "ventilateur", "libelle": "Ventilateur", "type": "etat", "etat": "neuf", "commentaire": "" }
+          ]
+        },
+        {
+          "id": "coin_sdb",
+          "libelle": "Coin salle de bain",
+          "elements": [
+            { "id": "lavabo", "libelle": "Lavabo et mitigeur", "type": "etat", "etat": "neuf", "commentaire": "Pas d'eclat, evacuation fonctionnelle" },
+            { "id": "miroir", "libelle": "Miroir", "type": "etat", "etat": "etat_usage", "commentaire": "Sans rayures" },
+            { "id": "douche", "libelle": "Receveur de douche et robinetterie", "type": "etat", "etat": "etat_usage", "commentaire": "Traces de calcaire, pas d'eclat ni de rayures, evacuation fonctionnelle" },
+            { "id": "rideau_douche", "libelle": "Rideau de douche", "type": "etat", "etat": "etat_usage", "commentaire": "" }
+          ]
+        }
+      ]
+    }
+
+  }
+}
