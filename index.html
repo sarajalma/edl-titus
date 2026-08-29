@@ -68,8 +68,27 @@
     border-bottom: 1px solid #f0eee9;
   }
   .element:last-child { border-bottom: 0; }
-  .libelle { font-weight: 600; font-size: 15px; }
-  .qte-info { font-weight: 400; color: var(--muted); font-size: 13px; }
+  .libelle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    font-weight: 600;
+    font-size: 15px;
+  }
+  .compteur {
+    width: 74px;
+    flex: none;
+    font: inherit;
+    font-weight: 400;
+    font-size: 14px;
+    text-align: center;
+    padding: 5px;
+    border: 1px solid var(--line);
+    border-radius: 7px;
+    background: #fbfaf8;
+  }
+  .compteur:focus { outline: 2px solid var(--accent); outline-offset: -1px; }
   .etats { display: flex; flex-wrap: wrap; gap: 6px; margin: 8px 0 6px; }
   .etats label {
     border: 1px solid var(--line);
@@ -98,7 +117,7 @@
     background: #fbfaf8;
     resize: vertical;
   }
-  textarea:focus, input[type=number]:focus { outline: 2px solid var(--accent); outline-offset: -1px; }
+  textarea:focus { outline: 2px solid var(--accent); outline-offset: -1px; }
   .inv-bloc h4 {
     margin: 0;
     padding: 9px 14px;
@@ -117,15 +136,6 @@
     font-size: 14px;
   }
   .inv-ligne:last-child { border-bottom: 0; }
-  .inv-ligne input[type=number] {
-    width: 74px;
-    font: inherit;
-    text-align: center;
-    padding: 5px;
-    border: 1px solid var(--line);
-    border-radius: 7px;
-    background: #fbfaf8;
-  }
   .erreur {
     background: #fdecea;
     border: 1px solid #f0b4ab;
@@ -201,12 +211,27 @@
     return n;
   }
 
+  function compteur(cle, quantite, aria) {
+    var nb = document.createElement('input');
+    nb.type = 'number';
+    nb.className = 'compteur';
+    nb.min = '0';
+    nb.step = '1';
+    nb.setAttribute('aria-label', 'Quantite — ' + aria);
+    nb.defaultValue = lire(cle, 'quantite', quantite);
+    nb.addEventListener('input', function () {
+      champ(cle, 'quantite', nb.value === '' ? '' : Number(nb.value));
+    });
+    return nb;
+  }
+
   function rendreElement(cle, donnee) {
     var bloc = el('div', 'element');
 
-    var titre = el('div', 'libelle', donnee.libelle);
+    var titre = el('div', 'libelle');
+    titre.appendChild(el('span', null, donnee.libelle));
     if (donnee.type === 'inventaire' && typeof donnee.quantite === 'number') {
-      titre.appendChild(el('span', 'qte-info', '  ×' + donnee.quantite));
+      titre.appendChild(compteur(cle, donnee.quantite, donnee.libelle));
     }
     bloc.appendChild(titre);
 
@@ -249,16 +274,7 @@
       var ligne = el('div', 'inv-ligne');
       ligne.appendChild(el('span', null, item.libelle));
 
-      var nb = document.createElement('input');
-      nb.type = 'number';
-      nb.min = '0';
-      nb.step = '1';
-      nb.setAttribute('aria-label', item.libelle);
-      nb.defaultValue = lire(cle, 'quantite', item.quantite);
-      nb.addEventListener('input', function () {
-        champ(cle, 'quantite', nb.value === '' ? '' : Number(nb.value));
-      });
-      ligne.appendChild(nb);
+      ligne.appendChild(compteur(cle, item.quantite, item.libelle));
       bloc.appendChild(ligne);
     });
     return bloc;
