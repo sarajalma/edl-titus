@@ -136,6 +136,32 @@
     font-size: 14px;
   }
   .inv-ligne:last-child { border-bottom: 0; }
+  .releve-ligne {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 10px 14px;
+    border-bottom: 1px solid #f0eee9;
+  }
+  .releve-ligne:last-child { border-bottom: 0; }
+  .releve-libelle { font-weight: 600; font-size: 15px; }
+  .releve-option { font-weight: 400; color: var(--muted); font-size: 13px; }
+  .releve-saisie { display: flex; align-items: center; gap: 7px; flex: none; }
+  .releve-saisie input {
+    width: 120px;
+    font: inherit;
+    font-size: 14px;
+    text-align: right;
+    padding: 5px 8px;
+    border: 1px solid var(--line);
+    border-radius: 7px;
+    background: #fbfaf8;
+    font-variant-numeric: tabular-nums;
+  }
+  .releve-saisie input:focus { outline: 2px solid var(--accent); outline-offset: -1px; }
+  .releve-unite { color: var(--muted); font-size: 13px; min-width: 34px; }
+
   .erreur {
     background: #fdecea;
     border: 1px solid #f0b4ab;
@@ -280,6 +306,42 @@
     return bloc;
   }
 
+  function rendreReleves(releves) {
+    var sect = el('section', 'zone');
+    sect.appendChild(el('h2', null, 'Releves de compteurs'));
+
+    var bloc = el('section', 'piece');
+    bloc.appendChild(el('h3', null, 'Index releves'));
+
+    releves.forEach(function (r) {
+      var cle = 'releves/' + r.id;
+      var ligne = el('div', 'releve-ligne');
+
+      var titre = el('div', 'releve-libelle', r.libelle);
+      if (r.option) titre.appendChild(el('span', 'releve-option', '  option ' + r.option));
+      ligne.appendChild(titre);
+
+      var saisie = el('div', 'releve-saisie');
+      var nb = document.createElement('input');
+      nb.type = 'number';
+      nb.step = 'any';
+      nb.min = '0';
+      nb.setAttribute('aria-label', 'Index — ' + r.libelle);
+      nb.defaultValue = lire(cle, 'valeur', r.valeur);
+      nb.addEventListener('input', function () {
+        champ(cle, 'valeur', nb.value === '' ? '' : Number(nb.value));
+      });
+      saisie.appendChild(nb);
+      saisie.appendChild(el('span', 'releve-unite', r.unite || ''));
+      ligne.appendChild(saisie);
+
+      bloc.appendChild(ligne);
+    });
+
+    sect.appendChild(bloc);
+    return sect;
+  }
+
   function rendrePiece(cleZone, piece) {
     var clePiece = cleZone + '/' + piece.id;
     var bloc = el('section', 'piece');
@@ -306,6 +368,10 @@
     document.getElementById('sous-titre').textContent =
       [logement.type, logement.nb_chambres ? logement.nb_chambres + ' chambres' : null]
         .filter(Boolean).join(' · ');
+
+    if (edl.releves && edl.releves.length) {
+      app.appendChild(rendreReleves(edl.releves));
+    }
 
     ORDRE_ZONES.forEach(function (cleZone) {
       var zone = (edl.zones || {})[cleZone];

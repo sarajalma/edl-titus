@@ -23,9 +23,9 @@
   },
 
   "chambres_occupants": {
-    "chambre_1": { "locataire": "Sacha", "email": null, "_note": "EDL source portait encore Alexis Castro" },
-    "chambre_2": { "locataire": "Maely", "email": null, "_note": "EDL source portait encore Maely Capelle et un intitule Chambre 3 / Anya Debur" },
-    "chambre_3": { "locataire": "Zack", "email": null, "_note": "EDL source portait encore Anya Debur" }
+    "chambre_1": { "locataire": "Clemence", "email": null, "_note": "EDL source portait encore Alexis Castro" },
+    "chambre_2": { "locataire": "Joachim", "email": null, "_note": "EDL source portait encore Maely Capelle et un intitule Chambre 3 / Anya Debur" },
+    "chambre_3": { "locataire": "Sarah", "email": null, "_note": "EDL source portait encore Anya Debur" }
   },
 
   "releves": [
